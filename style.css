@@ -50,19 +50,29 @@ html, body {
 
 .settings-toggle {
     position: fixed;
-    left: 10px;
-    top: 10px;
-    width: 40px;
-    height: 40px;
+    right: 20px;
+    bottom: 20px;
+    width: 56px;
+    height: 56px;
     background: var(--primary-orange);
     border: none;
     border-radius: 50%;
-    font-size: 20px;
-    cursor: pointer;
+    font-size: 28px;
+    cursor: grab;
     z-index: 101;
     display: flex;
     align-items: center;
     justify-content: center;
+    box-shadow: 0 4px 12px rgba(255, 140, 0, 0.3);
+    transition: box-shadow 0.2s;
+}
+
+.settings-toggle:hover {
+    box-shadow: 0 6px 16px rgba(255, 140, 0, 0.5);
+}
+
+.settings-toggle:active {
+    cursor: grabbing;
 }
 
 .settings-content {

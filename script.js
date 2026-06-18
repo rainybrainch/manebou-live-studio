@@ -60,6 +60,42 @@ document.addEventListener('click', (e) => {
     }
 });
 
+// Draggable Settings Button
+let isDragging = false;
+let dragOffsetX = 0;
+let dragOffsetY = 0;
+
+settingsToggle.addEventListener('mousedown', (e) => {
+    isDragging = true;
+    const rect = settingsToggle.getBoundingClientRect();
+    dragOffsetX = e.clientX - rect.left;
+    dragOffsetY = e.clientY - rect.top;
+    settingsToggle.style.cursor = 'grabbing';
+});
+
+document.addEventListener('mousemove', (e) => {
+    if (!isDragging) return;
+
+    const x = e.clientX - dragOffsetX;
+    const y = e.clientY - dragOffsetY;
+
+    // Keep button within viewport
+    const maxX = window.innerWidth - 56;
+    const maxY = window.innerHeight - 56;
+
+    settingsToggle.style.right = 'auto';
+    settingsToggle.style.bottom = 'auto';
+    settingsToggle.style.left = Math.max(0, Math.min(x, maxX)) + 'px';
+    settingsToggle.style.top = Math.max(0, Math.min(y, maxY)) + 'px';
+});
+
+document.addEventListener('mouseup', () => {
+    if (isDragging) {
+        isDragging = false;
+        settingsToggle.style.cursor = 'grab';
+    }
+});
+
 // Speech Recognition Events
 recognition.onstart = () => {
     isListening = true;
