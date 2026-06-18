@@ -63,24 +63,34 @@ document.addEventListener('click', (e) => {
     }
 });
 
-// Draggable Settings Button
+// Draggable Settings Panel (via Button)
 let isDragging = false;
 let dragOffsetX = 0;
 let dragOffsetY = 0;
+let panelOffsetX = 0;
+let panelOffsetY = 0;
 
 settingsToggle.addEventListener('mousedown', (e) => {
     isDragging = true;
     const rect = settingsToggle.getBoundingClientRect();
+    const panelRect = settingsPanel.getBoundingClientRect();
     dragOffsetX = e.clientX - rect.left;
     dragOffsetY = e.clientY - rect.top;
+    panelOffsetX = panelRect.left;
+    panelOffsetY = panelRect.top;
     settingsToggle.style.cursor = 'grabbing';
 });
 
 document.addEventListener('mousemove', (e) => {
     if (!isDragging) return;
 
-    const x = e.clientX - dragOffsetX;
-    const y = e.clientY - dragOffsetY;
+    const deltaX = e.clientX - (panelOffsetX + dragOffsetX);
+    const deltaY = e.clientY - (panelOffsetY + dragOffsetY);
+
+    const newButtonX = e.clientX - dragOffsetX;
+    const newButtonY = e.clientY - dragOffsetY;
+    const newPanelX = panelOffsetX + deltaX;
+    const newPanelY = panelOffsetY + deltaY;
 
     // Keep button within viewport
     const maxX = window.innerWidth - 56;
@@ -88,8 +98,13 @@ document.addEventListener('mousemove', (e) => {
 
     settingsToggle.style.right = 'auto';
     settingsToggle.style.bottom = 'auto';
-    settingsToggle.style.left = Math.max(0, Math.min(x, maxX)) + 'px';
-    settingsToggle.style.top = Math.max(0, Math.min(y, maxY)) + 'px';
+    settingsToggle.style.left = Math.max(0, Math.min(newButtonX, maxX)) + 'px';
+    settingsToggle.style.top = Math.max(0, Math.min(newButtonY, maxY)) + 'px';
+
+    // Move panel with button
+    settingsPanel.style.left = Math.max(0, Math.min(newPanelX, window.innerWidth - 280)) + 'px';
+    settingsPanel.style.top = Math.max(0, Math.min(newPanelY, window.innerHeight - 100)) + 'px';
+    settingsPanel.style.transform = 'none';
 });
 
 document.addEventListener('mouseup', () => {

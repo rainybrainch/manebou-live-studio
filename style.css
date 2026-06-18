@@ -32,7 +32,7 @@ html, body {
 /* Settings Panel */
 .settings-panel {
     position: fixed;
-    left: 0;
+    left: -280px;
     top: 0;
     width: 280px;
     height: 100vh;
@@ -41,12 +41,11 @@ html, body {
     box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
     z-index: 100;
     overflow-y: auto;
-    transform: translateX(-280px);
-    transition: transform 0.3s ease;
+    transition: left 0.3s ease;
 }
 
 .settings-panel.open {
-    transform: translateX(0);
+    left: 0;
 }
 
 .settings-toggle {
