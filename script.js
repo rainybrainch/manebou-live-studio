@@ -408,103 +408,148 @@ const subtitleArea = document.getElementById('subtitleArea');
 const container = document.querySelector('.container');
 const modalResizeHandle = document.getElementById('modalResizeHandle');
 
+// Enable GPU acceleration for resize performance
+leftVTuber.style.willChange = 'width';
+rightVTuber.style.willChange = 'width';
+broadcastArea.style.willChange = 'height';
+
+// Resize state
+let resizeState = {
+    isResizingLR: false,
+    isResizingRight: false,
+    isResizingVertical: false,
+    resizeStartX: 0,
+    resizeStartY: 0,
+    startLeftWidth: 0,
+    startRightWidth: 0,
+    startBroadcastHeight: 0,
+    resizeStartXRight: 0,
+    resizeStartYVertical: 0,
+    pendingUpdate: false
+};
+
+// Update on requestAnimationFrame for smooth performance
+function updateResizeFrame() {
+    if (!resizeState.pendingUpdate) return;
+    resizeState.pendingUpdate = false;
+
+    if (resizeState.isResizingLR) {
+        const delta = resizeState.lastClientX - resizeState.resizeStartX;
+        const newLeftWidth = Math.max(80, resizeState.startLeftWidth + delta);
+        leftVTuber.style.width = newLeftWidth + 'px';
+    }
+
+    if (resizeState.isResizingRight) {
+        const delta = resizeState.lastClientX - resizeState.resizeStartXRight;
+        const newRightWidth = Math.max(80, resizeState.startRightWidth - delta);
+        rightVTuber.style.width = newRightWidth + 'px';
+    }
+
+    if (resizeState.isResizingVertical) {
+        const delta = resizeState.lastClientY - resizeState.resizeStartYVertical;
+        const containerHeight = container.offsetHeight;
+        const newBroadcastHeight = Math.max(200, Math.min(containerHeight - 70, resizeState.startBroadcastHeight + delta));
+        broadcastArea.style.height = newBroadcastHeight + 'px';
+    }
+
+    requestAnimationFrame(updateResizeFrame);
+}
+
+requestAnimationFrame(updateResizeFrame);
+
 // Left-Right Resize
-let isResizingLR = false;
-let resizeStartX = 0;
-let startLeftWidth = 0;
-let startCenterWidth = 0;
-
 leftResizeHandle.addEventListener('mousedown', (e) => {
-    isResizingLR = true;
-    resizeStartX = e.clientX;
-    startLeftWidth = leftVTuber.offsetWidth;
-    startCenterWidth = centerContent.offsetWidth;
-});
-
-document.addEventListener('mousemove', (e) => {
-    if (!isResizingLR) return;
-    const delta = e.clientX - resizeStartX;
-    const newLeftWidth = Math.max(80, startLeftWidth + delta);
-    leftVTuber.style.width = newLeftWidth + 'px';
-});
-
-document.addEventListener('mouseup', () => {
-    isResizingLR = false;
+    resizeState.isResizingLR = true;
+    resizeState.resizeStartX = e.clientX;
+    resizeState.startLeftWidth = leftVTuber.offsetWidth;
+    leftVTuber.style.willChange = 'width';
 });
 
 // Right Resize
-let isResizingRight = false;
-let resizeStartXRight = 0;
-let startRightWidth = 0;
-
 rightResizeHandle.addEventListener('mousedown', (e) => {
-    isResizingRight = true;
-    resizeStartXRight = e.clientX;
-    startRightWidth = rightVTuber.offsetWidth;
-});
-
-document.addEventListener('mousemove', (e) => {
-    if (!isResizingRight) return;
-    const delta = e.clientX - resizeStartXRight;
-    const newRightWidth = Math.max(80, startRightWidth - delta);
-    rightVTuber.style.width = newRightWidth + 'px';
-});
-
-document.addEventListener('mouseup', () => {
-    isResizingRight = false;
+    resizeState.isResizingRight = true;
+    resizeState.resizeStartXRight = e.clientX;
+    resizeState.startRightWidth = rightVTuber.offsetWidth;
+    rightVTuber.style.willChange = 'width';
 });
 
 // Vertical Resize (Broadcast vs Subtitle)
-let isResizingVertical = false;
-let resizeStartY = 0;
-let startBroadcastHeight = 0;
-
 verticalResizeHandle.addEventListener('mousedown', (e) => {
-    isResizingVertical = true;
-    resizeStartY = e.clientY;
-    startBroadcastHeight = broadcastArea.offsetHeight;
+    resizeState.isResizingVertical = true;
+    resizeState.resizeStartYVertical = e.clientY;
+    resizeState.startBroadcastHeight = broadcastArea.offsetHeight;
+    broadcastArea.style.willChange = 'height';
 });
 
 document.addEventListener('mousemove', (e) => {
-    if (!isResizingVertical) return;
-    const delta = e.clientY - resizeStartY;
-    const containerHeight = container.offsetHeight;
-    const newBroadcastHeight = Math.max(200, Math.min(containerHeight - 70, startBroadcastHeight + delta));
-    broadcastArea.style.height = newBroadcastHeight + 'px';
+    if (resizeState.isResizingLR || resizeState.isResizingRight || resizeState.isResizingVertical) {
+        resizeState.lastClientX = e.clientX;
+        resizeState.lastClientY = e.clientY;
+        resizeState.pendingUpdate = true;
+    }
 });
 
 document.addEventListener('mouseup', () => {
-    isResizingVertical = false;
+    if (resizeState.isResizingLR || resizeState.isResizingRight || resizeState.isResizingVertical) {
+        resizeState.isResizingLR = false;
+        resizeState.isResizingRight = false;
+        resizeState.isResizingVertical = false;
+        leftVTuber.style.willChange = 'auto';
+        rightVTuber.style.willChange = 'auto';
+        broadcastArea.style.willChange = 'auto';
+    }
 });
 
-// ChatGPT Modal Resize
-let isResizingModal = false;
-let startModalX = 0;
-let startModalY = 0;
-let startModalWidth = 0;
-let startModalHeight = 0;
+// ChatGPT Modal Resize (Optimized with requestAnimationFrame)
+let modalResizeState = {
+    isResizing: false,
+    startX: 0,
+    startY: 0,
+    startWidth: 0,
+    startHeight: 0,
+    lastX: 0,
+    lastY: 0,
+    pendingUpdate: false
+};
+
+function updateModalResizeFrame() {
+    if (!modalResizeState.pendingUpdate) return;
+    modalResizeState.pendingUpdate = false;
+
+    const deltaX = modalResizeState.lastX - modalResizeState.startX;
+    const deltaY = modalResizeState.lastY - modalResizeState.startY;
+    const newWidth = Math.max(400, modalResizeState.startWidth + deltaX);
+    const newHeight = Math.max(300, modalResizeState.startHeight + deltaY);
+    chatgptModal.style.width = newWidth + 'px';
+    chatgptModal.style.height = newHeight + 'px';
+
+    requestAnimationFrame(updateModalResizeFrame);
+}
 
 modalResizeHandle.addEventListener('mousedown', (e) => {
-    isResizingModal = true;
-    startModalX = e.clientX;
-    startModalY = e.clientY;
-    startModalWidth = chatgptModal.offsetWidth;
-    startModalHeight = chatgptModal.offsetHeight;
+    modalResizeState.isResizing = true;
+    modalResizeState.startX = e.clientX;
+    modalResizeState.startY = e.clientY;
+    modalResizeState.startWidth = chatgptModal.offsetWidth;
+    modalResizeState.startHeight = chatgptModal.offsetHeight;
+    chatgptModal.style.willChange = 'width, height';
+    requestAnimationFrame(updateModalResizeFrame);
     e.preventDefault();
 });
 
 document.addEventListener('mousemove', (e) => {
-    if (!isResizingModal) return;
-    const deltaX = e.clientX - startModalX;
-    const deltaY = e.clientY - startModalY;
-    const newWidth = Math.max(400, startModalWidth + deltaX);
-    const newHeight = Math.max(300, startModalHeight + deltaY);
-    chatgptModal.style.width = newWidth + 'px';
-    chatgptModal.style.height = newHeight + 'px';
+    if (modalResizeState.isResizing) {
+        modalResizeState.lastX = e.clientX;
+        modalResizeState.lastY = e.clientY;
+        modalResizeState.pendingUpdate = true;
+    }
 });
 
 document.addEventListener('mouseup', () => {
-    isResizingModal = false;
+    if (modalResizeState.isResizing) {
+        modalResizeState.isResizing = false;
+        chatgptModal.style.willChange = 'auto';
+    }
 });
 
 // Initialize
