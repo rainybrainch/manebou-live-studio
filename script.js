@@ -27,13 +27,16 @@ const chatgptUrlInput = document.getElementById('chatgptUrl');
 let chatgptUrl = '';
 
 // Settings Elements
-const courseSelect = document.getElementById('courseSelect');
-const lessonSelect = document.getElementById('lessonSelect');
 const subtitleToggle = document.getElementById('subtitleToggle');
 const subtitleSize = document.getElementById('subtitleSize');
 const subtitleColor = document.getElementById('subtitleColor');
 const subtitleSizeValue = document.getElementById('subtitleSizeValue');
 const lectureFrame = document.getElementById('lectureFrame');
+const openHubBtn = document.getElementById('openHub');
+const backToLectureBtn = document.getElementById('backToLecture');
+
+const defaultLectureUrl = 'https://manebou-juku.vercel.app/';
+const hubUrl = 'https://rainybrainch.github.io/hub/';
 
 // Timer Elements
 const timerDisplay = document.getElementById('timerDisplay');
@@ -202,20 +205,16 @@ subtitleToggle.addEventListener('change', (e) => {
     }
 });
 
-// Lecture Navigation
-courseSelect.addEventListener('change', () => {
-    updateLessonURL();
+// Hub Navigation
+openHubBtn.addEventListener('click', () => {
+    lectureFrame.src = hubUrl;
+    settingsPanel.classList.remove('open');
 });
 
-lessonSelect.addEventListener('change', () => {
-    updateLessonURL();
+backToLectureBtn.addEventListener('click', () => {
+    lectureFrame.src = defaultLectureUrl;
+    settingsPanel.classList.remove('open');
 });
-
-function updateLessonURL() {
-    const course = courseSelect.value;
-    const lesson = lessonSelect.value;
-    lectureFrame.src = `https://manebou-juku.vercel.app/courses/${course}/lessons/${lesson}`;
-}
 
 // Timer Functions
 function formatTime(seconds) {
@@ -291,6 +290,44 @@ function openChatGPTModal() {
 function closeChatGPTModal() {
     chatgptModal.classList.remove('open');
     chatgptFrame.src = 'about:blank';
+}
+
+// Draggable Floating Window
+let isWindowDragging = false;
+let windowDragOffsetX = 0;
+let windowDragOffsetY = 0;
+
+const modalHeader = document.querySelector('.modal-header');
+if (modalHeader) {
+    modalHeader.addEventListener('mousedown', (e) => {
+        isWindowDragging = true;
+        const rect = chatgptModal.getBoundingClientRect();
+        windowDragOffsetX = e.clientX - rect.left;
+        windowDragOffsetY = e.clientY - rect.top;
+        modalHeader.style.cursor = 'grabbing';
+    });
+
+    document.addEventListener('mousemove', (e) => {
+        if (!isWindowDragging) return;
+
+        const x = e.clientX - windowDragOffsetX;
+        const y = e.clientY - windowDragOffsetY;
+
+        // Keep window within viewport
+        const maxX = window.innerWidth - chatgptModal.offsetWidth;
+        const maxY = window.innerHeight - chatgptModal.offsetHeight;
+
+        chatgptModal.style.right = 'auto';
+        chatgptModal.style.top = Math.max(0, Math.min(y, maxY)) + 'px';
+        chatgptModal.style.left = Math.max(0, Math.min(x, maxX)) + 'px';
+    });
+
+    document.addEventListener('mouseup', () => {
+        if (isWindowDragging) {
+            isWindowDragging = false;
+            modalHeader.style.cursor = 'move';
+        }
+    });
 }
 
 function setChatGPTUrl(url) {
