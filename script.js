@@ -11,18 +11,14 @@ recognition.continuous = true;
 const settingsToggle = document.querySelector('.settings-toggle');
 const settingsPanel = document.querySelector('.settings-panel');
 
-// Debug
-console.log('settingsToggle:', settingsToggle);
-console.log('settingsPanel:', settingsPanel);
+// Subtitle Elements
+const subtitleText = document.getElementById('subtitleText');
+const transcriptHistory = document.getElementById('transcriptHistory');
 
-if (!settingsToggle || !settingsPanel) {
-    console.error('Settings elements not found!');
-}
+// Optional Elements (may not exist)
 const startListeningBtn = document.getElementById('startListening');
 const stopListeningBtn = document.getElementById('stopListening');
 const clearSubtitleBtn = document.getElementById('clearSubtitle');
-const subtitleText = document.getElementById('subtitleText');
-const transcriptHistory = document.getElementById('transcriptHistory');
 const recordingStatus = document.getElementById('recordingStatus');
 const listenStatus = document.getElementById('listenStatus');
 
@@ -189,24 +185,30 @@ recognition.onend = () => {
 };
 
 // Start Listening
-startListeningBtn.addEventListener('click', () => {
-    try {
-        recognition.start();
-    } catch (e) {
-        console.log('Recognition already started or error:', e);
-    }
-});
+if (startListeningBtn) {
+    startListeningBtn.addEventListener('click', () => {
+        try {
+            recognition.start();
+        } catch (e) {
+            console.log('Recognition already started or error:', e);
+        }
+    });
+}
 
 // Stop Listening
-stopListeningBtn.addEventListener('click', () => {
-    recognition.stop();
-});
+if (stopListeningBtn) {
+    stopListeningBtn.addEventListener('click', () => {
+        recognition.stop();
+    });
+}
 
 // Clear Subtitle
-clearSubtitleBtn.addEventListener('click', () => {
-    subtitleText.textContent = '';
-    transcriptHistory.innerHTML = '';
-});
+if (clearSubtitleBtn) {
+    clearSubtitleBtn.addEventListener('click', () => {
+        subtitleText.textContent = '';
+        transcriptHistory.innerHTML = '';
+    });
+}
 
 // Add to Transcript History
 function addToTranscriptHistory(text) {
