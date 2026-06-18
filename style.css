@@ -309,43 +309,18 @@ html, body {
 
 /* Subtitle Area */
 .subtitle-area {
-    background: rgba(26, 26, 26, 0.95);
+    background: #1a1a1a;
     color: white;
-    padding: 0;
+    padding: 10px 15px;
     min-height: 70px;
     max-height: 90px;
     border-top: 2px solid var(--primary-orange);
     display: flex;
-    gap: 0;
-    overflow: hidden;
-    margin-left: 0;
-}
-
-.subtitle-area .vtuber-space {
-    width: 160px;
-    border: none;
-    background: linear-gradient(135deg, #fff5e6 0%, #ffe0b3 100%);
-    border: 2px dashed var(--primary-orange);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-}
-
-.subtitle-area .vtuber-space.left {
-    border-right: 2px solid var(--primary-orange);
-}
-
-.subtitle-area .vtuber-space.right {
-    border-left: 2px solid var(--primary-orange);
-}
-
-.center-subtitle {
-    flex: 1;
-    display: flex;
     flex-direction: column;
     gap: 6px;
-    padding: 10px 15px;
+    overflow: hidden;
+    margin-left: 160px;
+    margin-right: 160px;
 }
 
 .subtitle-status {
