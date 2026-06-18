@@ -71,14 +71,17 @@
         </div>
 
         <!-- Main Broadcasting Area -->
-        <div class="broadcast-area">
+        <div class="broadcast-area" id="broadcastArea">
             <!-- Left VTuber Space -->
-            <div class="vtuber-space left">
+            <div class="vtuber-space left" id="leftVTuber">
                 <div class="space-label">VTuber A<br>(OBS配置用)</div>
             </div>
 
+            <!-- Left Resize Handle -->
+            <div class="resize-handle vertical" id="leftResizeHandle"></div>
+
             <!-- Center Content -->
-            <div class="center-content">
+            <div class="center-content" id="centerContent">
                 <div class="lecture-container">
                     <iframe
                         id="lectureFrame"
@@ -89,14 +92,20 @@
                 </div>
             </div>
 
+            <!-- Right Resize Handle -->
+            <div class="resize-handle vertical" id="rightResizeHandle"></div>
+
             <!-- Right VTuber Space -->
-            <div class="vtuber-space right">
+            <div class="vtuber-space right" id="rightVTuber">
                 <div class="space-label">VTuber B<br>(OBS配置用)</div>
             </div>
         </div>
 
+        <!-- Horizontal Resize Handle -->
+        <div class="resize-handle horizontal" id="verticalResizeHandle"></div>
+
         <!-- Subtitle Area -->
-        <div class="subtitle-area">
+        <div class="subtitle-area" id="subtitleArea">
             <div class="subtitle-status">
                 <span id="recordingStatus">●リッスン中...</span>
             </div>
@@ -113,6 +122,7 @@
                     <button id="closeChatGPT" class="modal-close">✕</button>
                 </div>
                 <iframe id="chatgptFrame" src="about:blank" class="modal-iframe" allow="microphone; camera"></iframe>
+                <div class="modal-resize-handle" id="modalResizeHandle"></div>
             </div>
         </div>
     </div>

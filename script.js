@@ -359,6 +359,116 @@ chatgptModal.addEventListener('click', (e) => {
     }
 });
 
+// Resizable Layout
+const broadcastArea = document.getElementById('broadcastArea');
+const leftVTuber = document.getElementById('leftVTuber');
+const centerContent = document.getElementById('centerContent');
+const rightVTuber = document.getElementById('rightVTuber');
+const leftResizeHandle = document.getElementById('leftResizeHandle');
+const rightResizeHandle = document.getElementById('rightResizeHandle');
+const verticalResizeHandle = document.getElementById('verticalResizeHandle');
+const subtitleArea = document.getElementById('subtitleArea');
+const container = document.querySelector('.container');
+const modalResizeHandle = document.getElementById('modalResizeHandle');
+
+// Left-Right Resize
+let isResizingLR = false;
+let startX = 0;
+let startLeftWidth = 0;
+let startCenterWidth = 0;
+
+leftResizeHandle.addEventListener('mousedown', (e) => {
+    isResizingLR = true;
+    startX = e.clientX;
+    startLeftWidth = leftVTuber.offsetWidth;
+    startCenterWidth = centerContent.offsetWidth;
+});
+
+document.addEventListener('mousemove', (e) => {
+    if (!isResizingLR) return;
+    const delta = e.clientX - startX;
+    const newLeftWidth = Math.max(80, startLeftWidth + delta);
+    leftVTuber.style.width = newLeftWidth + 'px';
+});
+
+document.addEventListener('mouseup', () => {
+    isResizingLR = false;
+});
+
+// Right Resize
+let isResizingRight = false;
+let startRightWidth = 0;
+
+rightResizeHandle.addEventListener('mousedown', (e) => {
+    isResizingRight = true;
+    startX = e.clientX;
+    startRightWidth = rightVTuber.offsetWidth;
+});
+
+document.addEventListener('mousemove', (e) => {
+    if (!isResizingRight) return;
+    const delta = e.clientX - startX;
+    const newRightWidth = Math.max(80, startRightWidth - delta);
+    rightVTuber.style.width = newRightWidth + 'px';
+});
+
+document.addEventListener('mouseup', () => {
+    isResizingRight = false;
+});
+
+// Vertical Resize (Broadcast vs Subtitle)
+let isResizingVertical = false;
+let startY = 0;
+let startBroadcastHeight = 0;
+
+verticalResizeHandle.addEventListener('mousedown', (e) => {
+    isResizingVertical = true;
+    startY = e.clientY;
+    startBroadcastHeight = broadcastArea.offsetHeight;
+});
+
+document.addEventListener('mousemove', (e) => {
+    if (!isResizingVertical) return;
+    const delta = e.clientY - startY;
+    const containerHeight = container.offsetHeight;
+    const newBroadcastHeight = Math.max(200, Math.min(containerHeight - 70, startBroadcastHeight + delta));
+    broadcastArea.style.height = newBroadcastHeight + 'px';
+});
+
+document.addEventListener('mouseup', () => {
+    isResizingVertical = false;
+});
+
+// ChatGPT Modal Resize
+let isResizingModal = false;
+let startModalX = 0;
+let startModalY = 0;
+let startModalWidth = 0;
+let startModalHeight = 0;
+
+modalResizeHandle.addEventListener('mousedown', (e) => {
+    isResizingModal = true;
+    startModalX = e.clientX;
+    startModalY = e.clientY;
+    startModalWidth = chatgptModal.offsetWidth;
+    startModalHeight = chatgptModal.offsetHeight;
+    e.preventDefault();
+});
+
+document.addEventListener('mousemove', (e) => {
+    if (!isResizingModal) return;
+    const deltaX = e.clientX - startModalX;
+    const deltaY = e.clientY - startModalY;
+    const newWidth = Math.max(400, startModalWidth + deltaX);
+    const newHeight = Math.max(300, startModalHeight + deltaY);
+    chatgptModal.style.width = newWidth + 'px';
+    chatgptModal.style.height = newHeight + 'px';
+});
+
+document.addEventListener('mouseup', () => {
+    isResizingModal = false;
+});
+
 // Initialize
 updateTimerDisplay();
 stopListeningBtn.disabled = true;
