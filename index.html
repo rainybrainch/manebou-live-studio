@@ -74,7 +74,6 @@
         <div class="broadcast-area" id="broadcastArea">
             <!-- Left VTuber Space -->
             <div class="vtuber-space left" id="leftVTuber">
-                <div class="space-label">VTuber A<br>(OBS配置用)</div>
             </div>
 
             <!-- Left Resize Handle -->
@@ -97,7 +96,6 @@
 
             <!-- Right VTuber Space -->
             <div class="vtuber-space right" id="rightVTuber">
-                <div class="space-label">VTuber B<br>(OBS配置用)</div>
             </div>
         </div>
 
@@ -106,11 +104,20 @@
 
         <!-- Subtitle Area -->
         <div class="subtitle-area" id="subtitleArea">
-            <div class="subtitle-status">
-                <span id="recordingStatus">●リッスン中...</span>
+            <!-- Left VTuber Space (Extended) -->
+            <div class="vtuber-space left" id="leftVTuberExt"></div>
+
+            <!-- Center Subtitle Content -->
+            <div class="center-subtitle">
+                <div class="subtitle-status">
+                    <span>文字起こし</span>
+                </div>
+                <div class="subtitle-text" id="subtitleText"></div>
+                <div class="transcript-history" id="transcriptHistory"></div>
             </div>
-            <div class="subtitle-text" id="subtitleText"></div>
-            <div class="transcript-history" id="transcriptHistory"></div>
+
+            <!-- Right VTuber Space (Extended) -->
+            <div class="vtuber-space right" id="rightVTuberExt"></div>
         </div>
 
         <!-- ChatGPT Popup Modal -->
