@@ -38,6 +38,15 @@
                 </select>
             </div>
 
+            <div style="background: #f0f5f9; border: 2px solid #5BC8E8; border-radius: 8px; padding: 15px; margin-top: 15px;">
+                <h4 style="color: #5BC8E8; margin-bottom: 12px; font-size: 16px;">文字起こし</h4>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                    <button id="startListening" class="control-btn" style="background: #5BC8E8; color: white;">開始</button>
+                    <button id="stopListening" class="control-btn" style="background: #999; color: white;" disabled>停止</button>
+                </div>
+                <div id="listenStatus" style="font-size: 11px; color: #666; text-align: center; margin-top: 8px;">待機中</div>
+            </div>
+
             <div class="timer-section">
                 <h4>配信タイマー</h4>
                 <div class="timer-display" id="timerDisplay">00:00:00</div>

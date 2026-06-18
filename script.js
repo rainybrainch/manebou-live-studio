@@ -135,10 +135,9 @@ document.addEventListener('mouseup', () => {
 // Speech Recognition Events
 recognition.onstart = () => {
     isListening = true;
-    startListeningBtn.disabled = true;
-    stopListeningBtn.disabled = false;
-    recordingStatus.textContent = '●リッスン中...';
-    listenStatus.textContent = '聞き取り中...';
+    if (startListeningBtn) startListeningBtn.disabled = true;
+    if (stopListeningBtn) stopListeningBtn.disabled = false;
+    if (listenStatus) listenStatus.textContent = '聞き取り中...';
 };
 
 recognition.onresult = (event) => {
@@ -155,7 +154,7 @@ recognition.onresult = (event) => {
         }
     }
 
-    if (subtitleToggle.checked) {
+    if (subtitleToggle && subtitleToggle.checked) {
         // Show interim results in real-time
         if (interimTranscript) {
             subtitleText.textContent = interimTranscript;
@@ -173,15 +172,14 @@ recognition.onresult = (event) => {
 
 recognition.onerror = (event) => {
     console.error('Speech recognition error:', event.error);
-    listenStatus.textContent = `エラー: ${event.error}`;
+    if (listenStatus) listenStatus.textContent = `エラー: ${event.error}`;
 };
 
 recognition.onend = () => {
     isListening = false;
-    startListeningBtn.disabled = false;
-    stopListeningBtn.disabled = true;
-    recordingStatus.textContent = '停止中';
-    listenStatus.textContent = '待機中';
+    if (startListeningBtn) startListeningBtn.disabled = false;
+    if (stopListeningBtn) stopListeningBtn.disabled = true;
+    if (listenStatus) listenStatus.textContent = '待機中';
 };
 
 // Start Listening
