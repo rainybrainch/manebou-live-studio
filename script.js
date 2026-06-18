@@ -10,6 +10,14 @@ recognition.continuous = true;
 // DOM Elements
 const settingsToggle = document.querySelector('.settings-toggle');
 const settingsPanel = document.querySelector('.settings-panel');
+
+// Debug
+console.log('settingsToggle:', settingsToggle);
+console.log('settingsPanel:', settingsPanel);
+
+if (!settingsToggle || !settingsPanel) {
+    console.error('Settings elements not found!');
+}
 const startListeningBtn = document.getElementById('startListening');
 const stopListeningBtn = document.getElementById('stopListening');
 const clearSubtitleBtn = document.getElementById('clearSubtitle');
