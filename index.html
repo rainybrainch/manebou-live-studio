@@ -7,69 +7,69 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <!-- Settings Panel -->
-        <div class="settings-panel">
-            <div class="settings-toggle">⚙️</div>
-            <div class="settings-content">
-                <h3>設定</h3>
+    <!-- Settings Panel (Fixed Position - Above everything) -->
+    <div class="settings-panel">
+        <div class="settings-toggle">⚙️</div>
+        <div class="settings-content">
+            <h3>設定</h3>
 
-                <div class="setting-group">
-                    <label>
-                        <input type="checkbox" id="subtitleToggle" checked>
-                        字幕を表示
-                    </label>
+            <div class="setting-group">
+                <label>
+                    <input type="checkbox" id="subtitleToggle" checked>
+                    字幕を表示
+                </label>
+            </div>
+
+            <div class="setting-group">
+                <label for="subtitleSize">字幕サイズ:</label>
+                <input type="range" id="subtitleSize" min="12" max="24" value="16">
+                <span id="subtitleSizeValue">16px</span>
+            </div>
+
+            <div class="setting-group">
+                <label for="subtitleColor">字幕色:</label>
+                <select id="subtitleColor">
+                    <option value="#ffffff">白</option>
+                    <option value="#000000">黒</option>
+                    <option value="#FFD700">金色</option>
+                    <option value="#FF8C00">オレンジ</option>
+                </select>
+            </div>
+
+            <div class="timer-section">
+                <h4>配信タイマー</h4>
+                <div class="timer-display" id="timerDisplay">00:00:00</div>
+                <div class="timer-buttons">
+                    <button class="preset-btn" data-minutes="15">15分</button>
+                    <button class="preset-btn" data-minutes="30">30分</button>
+                    <button class="preset-btn" data-minutes="60">60分</button>
+                    <button class="preset-btn" data-minutes="90">90分</button>
                 </div>
-
-                <div class="setting-group">
-                    <label for="subtitleSize">字幕サイズ:</label>
-                    <input type="range" id="subtitleSize" min="12" max="24" value="16">
-                    <span id="subtitleSizeValue">16px</span>
-                </div>
-
-                <div class="setting-group">
-                    <label for="subtitleColor">字幕色:</label>
-                    <select id="subtitleColor">
-                        <option value="#ffffff">白</option>
-                        <option value="#000000">黒</option>
-                        <option value="#FFD700">金色</option>
-                        <option value="#FF8C00">オレンジ</option>
-                    </select>
-                </div>
-
-                <div class="timer-section">
-                    <h4>配信タイマー</h4>
-                    <div class="timer-display" id="timerDisplay">00:00:00</div>
-                    <div class="timer-buttons">
-                        <button class="preset-btn" data-minutes="15">15分</button>
-                        <button class="preset-btn" data-minutes="30">30分</button>
-                        <button class="preset-btn" data-minutes="60">60分</button>
-                        <button class="preset-btn" data-minutes="90">90分</button>
-                    </div>
-                    <div class="timer-controls">
-                        <button id="startBtn" class="control-btn">開始</button>
-                        <button id="pauseBtn" class="control-btn">一時停止</button>
-                        <button id="resetBtn" class="control-btn">リセット</button>
-                    </div>
-                </div>
-
-                <div class="popup-section" style="margin-top: 30px;">
-                    <h4 style="color: var(--primary-orange); margin-bottom: 10px; font-size: 16px;">ChatGPT</h4>
-                    <div class="setting-group">
-                        <label for="chatgptUrl">ChatGPT URL:</label>
-                        <input type="text" id="chatgptUrl" value="https://chatgpt.com/g/g-6a2ea645f1d08191b3bb9da3052262e2-manehouman-hua-ai" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 12px;">
-                    </div>
-                    <button id="openChatGPT" class="control-btn primary-small" style="width: 100%; margin-top: 8px;">ChatGPT を開く</button>
-                </div>
-
-                <div class="popup-section" style="margin-top: 20px; padding-top: 20px; border-top: 2px solid #ddd;">
-                    <h4 style="color: #5BC8E8; margin-bottom: 10px; font-size: 16px;">コンテンツ</h4>
-                    <button id="openHub" class="control-btn" style="width: 100%; background: #5BC8E8; color: white;">Hub を表示</button>
-                    <button id="backToLecture" class="control-btn" style="width: 100%; margin-top: 8px;">講義に戻す</button>
+                <div class="timer-controls">
+                    <button id="startBtn" class="control-btn">開始</button>
+                    <button id="pauseBtn" class="control-btn">一時停止</button>
+                    <button id="resetBtn" class="control-btn">リセット</button>
                 </div>
             </div>
-        </div>
 
+            <div class="popup-section" style="margin-top: 30px;">
+                <h4 style="color: var(--primary-orange); margin-bottom: 10px; font-size: 16px;">ChatGPT</h4>
+                <div class="setting-group">
+                    <label for="chatgptUrl">ChatGPT URL:</label>
+                    <input type="text" id="chatgptUrl" value="https://chatgpt.com/g/g-6a2ea645f1d08191b3bb9da3052262e2-manehouman-hua-ai" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 12px;">
+                </div>
+                <button id="openChatGPT" class="control-btn primary-small" style="width: 100%; margin-top: 8px;">ChatGPT を開く</button>
+            </div>
+
+            <div class="popup-section" style="margin-top: 20px; padding-top: 20px; border-top: 2px solid #ddd;">
+                <h4 style="color: #5BC8E8; margin-bottom: 10px; font-size: 16px;">コンテンツ</h4>
+                <button id="openHub" class="control-btn" style="width: 100%; background: #5BC8E8; color: white;">Hub を表示</button>
+                <button id="backToLecture" class="control-btn" style="width: 100%; margin-top: 8px;">講義に戻す</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
         <!-- Main Broadcasting Area -->
         <div class="broadcast-area" id="broadcastArea">
             <!-- Left VTuber Space -->
@@ -112,7 +112,6 @@
             <div class="subtitle-text" id="subtitleText"></div>
             <div class="transcript-history" id="transcriptHistory"></div>
         </div>
-
 
         <!-- ChatGPT Popup Modal -->
         <div id="chatgptModal" class="modal">
