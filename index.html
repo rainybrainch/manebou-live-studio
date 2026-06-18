@@ -70,6 +70,25 @@
                         <button id="resetBtn" class="control-btn">リセット</button>
                     </div>
                 </div>
+
+                <div class="speech-section">
+                    <h4>文字起こし</h4>
+                    <div class="speech-controls">
+                        <button id="startListening" class="control-btn primary-small">開始</button>
+                        <button id="stopListening" class="control-btn">停止</button>
+                        <button id="clearSubtitle" class="control-btn">クリア</button>
+                    </div>
+                    <div id="listenStatus" class="listen-status"></div>
+                </div>
+
+                <div class="popup-section">
+                    <h4 style="color: var(--primary-orange); margin-bottom: 10px; font-size: 16px;">ChatGPT</h4>
+                    <div class="setting-group">
+                        <label for="chatgptUrl">ChatGPT URL:</label>
+                        <input type="text" id="chatgptUrl" placeholder="https://chatgpt.com/..." style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 12px;">
+                    </div>
+                    <button id="openChatGPT" class="control-btn primary-small" style="width: 100%; margin-top: 8px;">ChatGPT を開く</button>
+                </div>
             </div>
         </div>
 
@@ -107,12 +126,20 @@
             <div class="transcript-history" id="transcriptHistory"></div>
         </div>
 
-        <!-- Controls -->
+        <!-- Minimal Controls -->
         <div class="broadcast-controls">
-            <button id="startListening" class="control-button primary">🎙️ 文字起こし開始</button>
-            <button id="stopListening" class="control-button">⏹️ 停止</button>
-            <button id="clearSubtitle" class="control-button">🗑️ クリア</button>
-            <span id="listenStatus" class="status-text"></span>
+            <span id="recordingStatus" class="status-text">停止中</span>
+        </div>
+
+        <!-- ChatGPT Popup Modal -->
+        <div id="chatgptModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>ChatGPT</h3>
+                    <button id="closeChatGPT" class="modal-close">✕</button>
+                </div>
+                <iframe id="chatgptFrame" src="about:blank" class="modal-iframe" allow="microphone; camera"></iframe>
+            </div>
         </div>
     </div>
 

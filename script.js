@@ -18,6 +18,14 @@ const transcriptHistory = document.getElementById('transcriptHistory');
 const recordingStatus = document.getElementById('recordingStatus');
 const listenStatus = document.getElementById('listenStatus');
 
+// Modal Elements
+const chatgptModal = document.getElementById('chatgptModal');
+const openChatGPTBtn = document.getElementById('openChatGPT');
+const closeChatGPTBtn = document.getElementById('closeChatGPT');
+const chatgptFrame = document.getElementById('chatgptFrame');
+const chatgptUrlInput = document.getElementById('chatgptUrl');
+let chatgptUrl = '';
+
 // Settings Elements
 const courseSelect = document.getElementById('courseSelect');
 const lessonSelect = document.getElementById('lessonSelect');
@@ -234,9 +242,54 @@ presetBtns.forEach(btn => {
     });
 });
 
+// ChatGPT Modal Functions
+function openChatGPTModal() {
+    if (chatgptUrl) {
+        chatgptFrame.src = chatgptUrl;
+        chatgptModal.classList.add('open');
+    } else {
+        alert('ChatGPT URL が設定されていません。設定パネルで入力してください。');
+    }
+}
+
+function closeChatGPTModal() {
+    chatgptModal.classList.remove('open');
+    chatgptFrame.src = 'about:blank';
+}
+
+function setChatGPTUrl(url) {
+    chatgptUrl = url;
+    localStorage.setItem('chatgptUrl', url);
+}
+
+function loadChatGPTUrl() {
+    const saved = localStorage.getItem('chatgptUrl');
+    if (saved) {
+        chatgptUrl = saved;
+        chatgptUrlInput.value = saved;
+    }
+}
+
+// ChatGPT URL Input Handler
+chatgptUrlInput.addEventListener('change', () => {
+    setChatGPTUrl(chatgptUrlInput.value);
+});
+
+// Modal Event Listeners
+openChatGPTBtn.addEventListener('click', openChatGPTModal);
+closeChatGPTBtn.addEventListener('click', closeChatGPTModal);
+
+// Close modal when clicking outside
+chatgptModal.addEventListener('click', (e) => {
+    if (e.target === chatgptModal) {
+        closeChatGPTModal();
+    }
+});
+
 // Initialize
 updateTimerDisplay();
 stopListeningBtn.disabled = true;
 pauseBtn.disabled = true;
+loadChatGPTUrl();
 
 console.log('マネアカ配信画面 - Manebou Live Studio initialized');
