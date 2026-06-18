@@ -412,20 +412,20 @@ const modalResizeHandle = document.getElementById('modalResizeHandle');
 
 // Left-Right Resize
 let isResizingLR = false;
-let startX = 0;
+let resizeStartX = 0;
 let startLeftWidth = 0;
 let startCenterWidth = 0;
 
 leftResizeHandle.addEventListener('mousedown', (e) => {
     isResizingLR = true;
-    startX = e.clientX;
+    resizeStartX = e.clientX;
     startLeftWidth = leftVTuber.offsetWidth;
     startCenterWidth = centerContent.offsetWidth;
 });
 
 document.addEventListener('mousemove', (e) => {
     if (!isResizingLR) return;
-    const delta = e.clientX - startX;
+    const delta = e.clientX - resizeStartX;
     const newLeftWidth = Math.max(80, startLeftWidth + delta);
     leftVTuber.style.width = newLeftWidth + 'px';
 });
@@ -436,17 +436,18 @@ document.addEventListener('mouseup', () => {
 
 // Right Resize
 let isResizingRight = false;
+let resizeStartXRight = 0;
 let startRightWidth = 0;
 
 rightResizeHandle.addEventListener('mousedown', (e) => {
     isResizingRight = true;
-    startX = e.clientX;
+    resizeStartXRight = e.clientX;
     startRightWidth = rightVTuber.offsetWidth;
 });
 
 document.addEventListener('mousemove', (e) => {
     if (!isResizingRight) return;
-    const delta = e.clientX - startX;
+    const delta = e.clientX - resizeStartXRight;
     const newRightWidth = Math.max(80, startRightWidth - delta);
     rightVTuber.style.width = newRightWidth + 'px';
 });
@@ -457,18 +458,18 @@ document.addEventListener('mouseup', () => {
 
 // Vertical Resize (Broadcast vs Subtitle)
 let isResizingVertical = false;
-let startY = 0;
+let resizeStartY = 0;
 let startBroadcastHeight = 0;
 
 verticalResizeHandle.addEventListener('mousedown', (e) => {
     isResizingVertical = true;
-    startY = e.clientY;
+    resizeStartY = e.clientY;
     startBroadcastHeight = broadcastArea.offsetHeight;
 });
 
 document.addEventListener('mousemove', (e) => {
     if (!isResizingVertical) return;
-    const delta = e.clientY - startY;
+    const delta = e.clientY - resizeStartY;
     const containerHeight = container.offsetHeight;
     const newBroadcastHeight = Math.max(200, Math.min(containerHeight - 70, startBroadcastHeight + delta));
     broadcastArea.style.height = newBroadcastHeight + 'px';
