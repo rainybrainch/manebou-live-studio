@@ -319,8 +319,7 @@ html, body {
     flex-direction: column;
     gap: 6px;
     overflow: hidden;
-    margin-left: 160px;
-    margin-right: 160px;
+    width: 100%;
 }
 
 .subtitle-status {
