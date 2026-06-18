@@ -51,22 +51,13 @@ let timerInterval = null;
 let timerSeconds = 0;
 let isTimerRunning = false;
 
-// Settings Panel Toggle
-settingsToggle.addEventListener('click', () => {
-    settingsPanel.classList.toggle('open');
-});
-
-// Close settings when clicking outside
-document.addEventListener('click', (e) => {
-    if (!settingsPanel.contains(e.target) && !settingsToggle.contains(e.target)) {
-        settingsPanel.classList.remove('open');
-    }
-});
-
 // Settings Panel Toggle (Click to Open/Close)
 let isPanelOpen = false;
+let isDraggingNow = false;
 
-settingsToggle.addEventListener('click', () => {
+settingsToggle.addEventListener('click', (e) => {
+    if (isDraggingNow) return; // Don't toggle if dragging
+
     isPanelOpen = !isPanelOpen;
     if (isPanelOpen) {
         settingsPanel.classList.add('open');
@@ -92,8 +83,8 @@ let buttonStartTop = 0;
 let panelStartLeft = 0;
 
 settingsToggle.addEventListener('mousedown', (e) => {
-    // Only drag on long press or specific area, prevent accidental drag on click
     isDraggingButton = true;
+    isDraggingNow = false; // Reset drag flag
     startX = e.clientX;
     startY = e.clientY;
 
@@ -112,6 +103,7 @@ document.addEventListener('mousemove', (e) => {
     // Only drag if moved more than 5px
     if (Math.abs(moveX) < 5 && Math.abs(moveY) < 5) return;
 
+    isDraggingNow = true; // Mark as dragging to prevent click
     settingsToggle.style.cursor = 'grabbing';
 
     const newButtonLeft = Math.max(0, Math.min(buttonStartLeft + moveX, window.innerWidth - 56));
@@ -131,6 +123,7 @@ document.addEventListener('mousemove', (e) => {
 document.addEventListener('mouseup', () => {
     if (isDraggingButton) {
         isDraggingButton = false;
+        isDraggingNow = false; // Reset drag flag
         settingsToggle.style.cursor = 'grab';
     }
 });
