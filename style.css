@@ -42,10 +42,11 @@ html, body {
     z-index: 100;
     overflow-y: auto;
     transition: left 0.3s ease;
+    transform: none !important;
 }
 
 .settings-panel.open {
-    left: 0;
+    left: 0 !important;
 }
 
 .settings-toggle {

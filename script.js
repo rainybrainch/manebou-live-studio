@@ -63,53 +63,74 @@ document.addEventListener('click', (e) => {
     }
 });
 
-// Draggable Settings Panel (via Button)
-let isDragging = false;
-let dragOffsetX = 0;
-let dragOffsetY = 0;
-let panelOffsetX = 0;
-let panelOffsetY = 0;
+// Settings Panel Toggle (Click to Open/Close)
+let isPanelOpen = false;
+
+settingsToggle.addEventListener('click', () => {
+    isPanelOpen = !isPanelOpen;
+    if (isPanelOpen) {
+        settingsPanel.classList.add('open');
+    } else {
+        settingsPanel.classList.remove('open');
+    }
+});
+
+// Close settings when clicking outside (both panel and button)
+document.addEventListener('click', (e) => {
+    if (!settingsPanel.contains(e.target) && !settingsToggle.contains(e.target)) {
+        settingsPanel.classList.remove('open');
+        isPanelOpen = false;
+    }
+});
+
+// Draggable Settings Button (Moves both button and panel)
+let isDraggingButton = false;
+let startX = 0;
+let startY = 0;
+let buttonStartLeft = 0;
+let buttonStartTop = 0;
+let panelStartLeft = 0;
 
 settingsToggle.addEventListener('mousedown', (e) => {
-    isDragging = true;
-    const rect = settingsToggle.getBoundingClientRect();
-    const panelRect = settingsPanel.getBoundingClientRect();
-    dragOffsetX = e.clientX - rect.left;
-    dragOffsetY = e.clientY - rect.top;
-    panelOffsetX = panelRect.left;
-    panelOffsetY = panelRect.top;
-    settingsToggle.style.cursor = 'grabbing';
+    // Only drag on long press or specific area, prevent accidental drag on click
+    isDraggingButton = true;
+    startX = e.clientX;
+    startY = e.clientY;
+
+    const buttonRect = settingsToggle.getBoundingClientRect();
+    buttonStartLeft = buttonRect.left;
+    buttonStartTop = buttonRect.top;
+    panelStartLeft = settingsPanel.getBoundingClientRect().left;
 });
 
 document.addEventListener('mousemove', (e) => {
-    if (!isDragging) return;
+    if (!isDraggingButton) return;
 
-    const deltaX = e.clientX - (panelOffsetX + dragOffsetX);
-    const deltaY = e.clientY - (panelOffsetY + dragOffsetY);
+    const moveX = e.clientX - startX;
+    const moveY = e.clientY - startY;
 
-    const newButtonX = e.clientX - dragOffsetX;
-    const newButtonY = e.clientY - dragOffsetY;
-    const newPanelX = panelOffsetX + deltaX;
-    const newPanelY = panelOffsetY + deltaY;
+    // Only drag if moved more than 5px
+    if (Math.abs(moveX) < 5 && Math.abs(moveY) < 5) return;
 
-    // Keep button within viewport
-    const maxX = window.innerWidth - 56;
-    const maxY = window.innerHeight - 56;
+    settingsToggle.style.cursor = 'grabbing';
+
+    const newButtonLeft = Math.max(0, Math.min(buttonStartLeft + moveX, window.innerWidth - 56));
+    const newButtonTop = Math.max(0, Math.min(buttonStartTop + moveY, window.innerHeight - 56));
 
     settingsToggle.style.right = 'auto';
-    settingsToggle.style.bottom = 'auto';
-    settingsToggle.style.left = Math.max(0, Math.min(newButtonX, maxX)) + 'px';
-    settingsToggle.style.top = Math.max(0, Math.min(newButtonY, maxY)) + 'px';
+    settingsToggle.style.left = newButtonLeft + 'px';
+    settingsToggle.style.top = newButtonTop + 'px';
 
     // Move panel with button
-    settingsPanel.style.left = Math.max(0, Math.min(newPanelX, window.innerWidth - 280)) + 'px';
-    settingsPanel.style.top = Math.max(0, Math.min(newPanelY, window.innerHeight - 100)) + 'px';
-    settingsPanel.style.transform = 'none';
+    if (isPanelOpen) {
+        const newPanelLeft = Math.max(-280, panelStartLeft + moveX);
+        settingsPanel.style.left = newPanelLeft + 'px';
+    }
 });
 
 document.addEventListener('mouseup', () => {
-    if (isDragging) {
-        isDragging = false;
+    if (isDraggingButton) {
+        isDraggingButton = false;
         settingsToggle.style.cursor = 'grab';
     }
 });
